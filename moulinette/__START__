@@ -1,0 +1,28 @@
+make re > /dev/null
+
+echo "Step 1/2"
+./moul_auzou_vieira > a
+
+echo "Step 2/2"
+LD_PRELOAD="$PWD/../libasm.so"
+./moul_auzou_vieira > b
+LD_PRELOAD=""
+
+diff a b > /dev/null
+
+rc=$?
+
+red=`tput setaf 1`
+green=`tput setaf 2`
+reset=`tput sgr0`
+
+if [ $rc -eq 0 ]
+then
+   echo "${green}Good !${reset}"
+else
+   echo "${red}Bad !${reset}"
+fi
+
+rm -f a
+rm -f b
+make fclean > /dev/null
